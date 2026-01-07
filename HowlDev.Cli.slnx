@@ -1,3 +1,6 @@
 <Solution>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/HowlDev.Cli.TextDTO.Tests/HowlDev.Cli.TextDTO.Tests.csproj" />
+  </Folder>
   <Project Path="HowlDev.Cli.TextDTO/HowlDev.Cli.TextDTO.csproj" />
 </Solution>
