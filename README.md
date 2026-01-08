@@ -8,10 +8,10 @@ This is a command-line NuGet package that you can install with:
 dotnet tool install --global HowlDev.Cli.TextDTO
 ```
 
-You can use it by: 
+An example of usage: 
 
 ```bash
-textdto ./schemas cs ./api/dtos ts-z ./client/dtos
+textdto ./dtos cs ./api/dtos ts ./client/src/types ts-z ./client/src/zod
 ```
 
 You can export a given file as a set of DTO's with any of the 3 following tags:
@@ -25,6 +25,7 @@ You can export a given file as a set of DTO's with any of the 3 following tags:
 - ts-z
   - Creates a Zod object with the provided properties (you must install Zod yourself)
   - Names are appended with Schema for Zod parsing and Type for the type inference. Both are exported.
+  - Nullable uses the Zod type `.nullable()` since `.optional()` does not do anything in the presence of `.default()` 
 
 ## File structure
 
@@ -72,6 +73,10 @@ For C#, you can also put items in the same namespace and reference them as type 
 Arrays are not yet supported. 
 
 ## Changelog
+
+0.1.1 (1/8/26)
+
+- Found out about the RollForward property for applications, so now you don't have to specifically have the 8.0 runtime to run this app. 
 
 0.1.0 (1/8/26)
 
