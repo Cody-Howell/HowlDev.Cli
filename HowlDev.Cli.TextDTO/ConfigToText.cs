@@ -51,4 +51,20 @@ public static class ConfigToText {
         output += "}\n";
         return output;
     }
+
+    /// <summary>
+    /// Returns a JS Type file with full exports. 
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
+    public static string ToTSFile(TextConfigFile file) {
+        if (file.Type != ConfigOptionType.Object) {
+            throw new InvalidOperationException("Configuration must be of type Object.");
+        }
+
+        return "";
+    }
+
+    private static string ConvertCSharpToJS(string val) => switch (val) {
+        
+    }
 }
