@@ -48,11 +48,15 @@ class Program {
                         text = ConfigToText.ToCSharpFile(config);
                         break;
                     case "ts":
+                        text = ConfigToText.ToTSFile(config);
                         break;
                     case "ts-z":
+                        text = ConfigToText.ToTSZodFile(config);
                         break;
                 }
-                File.WriteAllText(outputFolder + "/" + fileWithoutExtension + "." + type.Split('-')[0], text);
+                string newPath = outputFolder + "/" + fileWithoutExtension + "." + type.Split('-')[0];
+                Console.WriteLine($"Writing file to: {newPath}");
+                File.WriteAllText(newPath, text);
             }
         }
 
