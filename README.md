@@ -59,17 +59,6 @@ The current list of types supported are C# primitives. They are all converted to
 - bool
   - bool for C#, boolean for JS, TS, and Zod
 
-For C#, you can also put items in the same namespace and reference them as type fields. For instance, if you had a class `Calculator` then you could reference it in a type as follows: 
-
-```json
-{
-  "name": "Id", // These two properties are required
-  "type": "int",
-  "default": "Unknown", // You can assign a default value here (optional param)
-  "nullable": true // You can make a property optional (optional param)
-},
-```
-
 Arrays are not yet supported. 
 
 ## Changelog
