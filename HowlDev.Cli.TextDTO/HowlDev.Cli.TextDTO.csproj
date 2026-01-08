@@ -18,6 +18,7 @@
 	<Nullable>enable</Nullable>
 	<IncludeSymbols>true</IncludeSymbols>
 	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	<RollForward>Major</RollForward>
     
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>textdto</ToolCommandName>
