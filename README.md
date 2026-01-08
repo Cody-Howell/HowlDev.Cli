@@ -26,6 +26,10 @@ You can export a given file as a set of DTO's with any of the 3 following tags:
   - Creates a Zod object with the provided properties (you must install Zod yourself)
   - Names are appended with Schema for Zod parsing and Type for the type inference. Both are exported.
 
+## File structure
+
+The files you pass in from the schemas folder needs to be parsable by the most recent version of the ConfigFileLibrary. Currently, that supports JSON and YAML files. 
+
 Here's the structure:
 
 ```json
@@ -36,23 +40,16 @@ Here's the structure:
   "properties": [
     {
       "name": "Id", // These two properties are required
-      "type": "int"
-    },
-    {
-      "name": "Sample",
-      "type": "string",
-      "default": "Unknown" // You can assign a default value here (optional param)
-    },
-    {
-      "name": "ProjectTitle",
-      "type": "string",
+      "type": "int",
+      "default": "Unknown", // You can assign a default value here (optional param)
       "nullable": true // You can make a property optional (optional param)
-    }
+    },
+    ... // Add as many properties here as needed
   ]
 }
 ```
 
-The current list of types are C# primitives. They are all converted to a TS type when being added to a TS file.
+The current list of types supported are C# primitives. They are all converted to a TS type when being added to a TS file.
 
 - string
   - string for JS, TS, Zod, and C#
@@ -60,3 +57,23 @@ The current list of types are C# primitives. They are all converted to a TS type
   - ___ for C#, number for JS, TS, and Zod
 - bool
   - bool for C#, boolean for JS, TS, and Zod
+
+For C#, you can also put items in the same namespace and reference them as type fields. For instance, if you had a class `Calculator` then you could reference it in a type as follows: 
+
+```json
+{
+  "name": "Id", // These two properties are required
+  "type": "int",
+  "default": "Unknown", // You can assign a default value here (optional param)
+  "nullable": true // You can make a property optional (optional param)
+},
+```
+
+Arrays are not yet supported. 
+
+## Changelog
+
+0.1.0 (1/8/26)
+
+- Initialized
+- Only primitives are really supported. No type checking happens. 
