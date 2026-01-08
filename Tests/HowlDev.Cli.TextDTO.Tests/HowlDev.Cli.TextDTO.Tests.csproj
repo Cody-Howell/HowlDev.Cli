@@ -11,4 +11,8 @@
     <PackageReference Include="TUnit" Version="1.7.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\HowlDev.Cli.TextDTO\HowlDev.Cli.TextDTO.csproj" />
+  </ItemGroup>
+
 </Project>

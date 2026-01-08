@@ -19,7 +19,6 @@ public static class ConfigToText {
         string output = "";
 
         bool ignoreWarnings = file.Contains("ignoreWarnings") && file["ignoreWarnings"].ToBoolean(null);
-
         if (ignoreWarnings) {
             output += "#pragma warning disable\n";
         }
