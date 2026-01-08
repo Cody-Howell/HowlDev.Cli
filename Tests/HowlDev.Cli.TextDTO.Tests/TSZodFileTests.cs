@@ -3,7 +3,7 @@ using HowlDev.IO.Text.ConfigFile.Enums;
 
 namespace HowlDev.Cli.TextDTO.Tests;
 
-public class CSharpFileTests {
+public class TSZodFileTests {
     [Test]
     public async Task SimpleFileNoNamespaceAnd1Property() {
         string json = """
@@ -18,11 +18,15 @@ public class CSharpFileTests {
         }
         """;
         TextConfigFile config = TextConfigFile.ReadTextAs(FileTypes.JSON, json);
-        string result = ConfigToText.ToCSharpFile(config);
+        string result = ConfigToText.ToTSZodFile(config);
         await Assert.That(result).IsEqualTo("""
-        public class IdAndTitleDTO {
-            public int Id { get; set; } 
-        }
+        import z from "zod"
+
+        export const IdAndTitleDTOSchema = z.object({
+            Id: z.number(),
+        });
+
+        export type IdAndTitleDTOType = z.infer<typeof IdAndTitleDTOSchema>;
 
         """);
     }
@@ -31,7 +35,7 @@ public class CSharpFileTests {
     public async Task SimpleFileNoNamespaceAnd1FullProperty() {
         string json = """
         {
-            "name": "IdAndTitleDTO", 
+            "name": "SomethingElse", 
             "properties": [
                 {
                     "name": "Name",
@@ -43,11 +47,15 @@ public class CSharpFileTests {
         }
         """;
         TextConfigFile config = TextConfigFile.ReadTextAs(FileTypes.JSON, json);
-        string result = ConfigToText.ToCSharpFile(config);
+        string result = ConfigToText.ToTSZodFile(config);
         await Assert.That(result).IsEqualTo("""
-        public class IdAndTitleDTO {
-            public string? Name { get; set; } = "Default Name";
-        }
+        import z from "zod"
+
+        export const SomethingElseSchema = z.object({
+            Name: z.string().default("Default Name").nullable(),
+        });
+
+        export type SomethingElseType = z.infer<typeof SomethingElseSchema>;
 
         """);
     }
@@ -69,13 +77,15 @@ public class CSharpFileTests {
         }
         """;
         TextConfigFile config = TextConfigFile.ReadTextAs(FileTypes.JSON, json);
-        string result = ConfigToText.ToCSharpFile(config);
+        string result = ConfigToText.ToTSZodFile(config);
         await Assert.That(result).IsEqualTo("""
-        namespace HowlDev.Cli.Tests;
-        
-        public class IdAndTitleDTO {
-            public string? Name { get; set; } = "Default Name";
-        }
+        import z from "zod"
+
+        export const IdAndTitleDTOSchema = z.object({
+            Name: z.string().default("Default Name").nullable(),
+        });
+
+        export type IdAndTitleDTOType = z.infer<typeof IdAndTitleDTOSchema>;
 
         """);
     }
@@ -96,15 +106,11 @@ public class CSharpFileTests {
                 {
                     "name": "Sample",
                     "type": "string", 
-                    "default": "Unknown"
+                    "default": "Unknown", 
+                    "nullable": true
                 },
                 {
-                    "name": "Indexes",
-                    "type": "Calculator[]",
-                    "default": "new()"
-                },
-                {
-                    "name": "Boolean",
+                    "name": "Bool",
                     "type": "bool", 
                     "default": "true"
                 },
@@ -117,18 +123,20 @@ public class CSharpFileTests {
         }
         """;
         TextConfigFile config = TextConfigFile.ReadTextAs(FileTypes.JSON, json);
-        string result = ConfigToText.ToCSharpFile(config);
+        string result = ConfigToText.ToTSZodFile(config);
         await Assert.That(result).IsEqualTo("""
-        #pragma warning disable
-        namespace ProjectTracker.Classes;
-        
-        public class IdAndTitleDTO {
-            public int Id { get; set; } = 23;
-            public string Sample { get; set; } = "Unknown";
-            public Calculator[] Indexes { get; set; } = new();
-            public bool Boolean { get; set; } = true;
-            public double Amount { get; set; } = 25.1;
-        }
+        /* eslint-disable */
+        import z from "zod"
+
+        export const IdAndTitleDTOSchema = z.object({
+            Id: z.number().default(23),
+            Sample: z.string().default("Unknown").nullable(),
+            Bool: z.boolean().default(true),
+            Amount: z.number().default(25.1),
+        });
+
+        export type IdAndTitleDTOType = z.infer<typeof IdAndTitleDTOSchema>;
+        /* eslint-enable */
 
         """);
     }

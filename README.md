@@ -5,19 +5,26 @@
 This is a command-line NuGet package that you can install with:
 
 ```bash
-dotnet tool install --global --add-source ./nupkgs YourUniquePackageId
+dotnet tool install --global HowlDev.Cli.TextDTO
 ```
 
-You can export a given file as a set of DTO's with any of the 4 following tags:
+You can use it by: 
+
+```bash
+textdto ./schemas cs ./api/dtos ts-z ./client/dtos
+```
+
+You can export a given file as a set of DTO's with any of the 3 following tags:
 
 - cs
   - Exports a C# file with an optional namespace in the format of a class with public get and set properties
-- js
-  - Creates an interface with the provided properties
 - ts
   - Creates a Type that has the provided properties
+    - Ignores the Default property (impossible with type definitions)
+    - Nullable means undefined, the default null state for things in JavaScript
 - ts-z
   - Creates a Zod object with the provided properties (you must install Zod yourself)
+  - Names are appended with Schema for Zod parsing and Type for the type inference. Both are exported.
 
 Here's the structure:
 
@@ -45,13 +52,11 @@ Here's the structure:
 }
 ```
 
-The current list of types:
+The current list of types are C# primitives. They are all converted to a TS type when being added to a TS file.
 
 - string
-  - String for JS, TS, Zod, and C#
-- int
-  - int for C#, number for JS, TS, and Zod
-- double
-  - double for C#, number for JS, TS, and Zod
+  - string for JS, TS, Zod, and C#
+- int, uint, byte, long, double, etc.
+  - ___ for C#, number for JS, TS, and Zod
 - bool
   - bool for C#, boolean for JS, TS, and Zod

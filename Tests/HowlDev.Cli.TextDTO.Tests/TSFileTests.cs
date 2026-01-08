@@ -3,7 +3,7 @@ using HowlDev.IO.Text.ConfigFile.Enums;
 
 namespace HowlDev.Cli.TextDTO.Tests;
 
-public class CSharpFileTests {
+public class TSFileTests {
     [Test]
     public async Task SimpleFileNoNamespaceAnd1Property() {
         string json = """
@@ -18,10 +18,10 @@ public class CSharpFileTests {
         }
         """;
         TextConfigFile config = TextConfigFile.ReadTextAs(FileTypes.JSON, json);
-        string result = ConfigToText.ToCSharpFile(config);
+        string result = ConfigToText.ToTSFile(config);
         await Assert.That(result).IsEqualTo("""
-        public class IdAndTitleDTO {
-            public int Id { get; set; } 
+        export type IdAndTitleDTO = {
+            Id: number 
         }
 
         """);
@@ -43,10 +43,10 @@ public class CSharpFileTests {
         }
         """;
         TextConfigFile config = TextConfigFile.ReadTextAs(FileTypes.JSON, json);
-        string result = ConfigToText.ToCSharpFile(config);
+        string result = ConfigToText.ToTSFile(config);
         await Assert.That(result).IsEqualTo("""
-        public class IdAndTitleDTO {
-            public string? Name { get; set; } = "Default Name";
+        export type IdAndTitleDTO = {
+            Name: string | undefined
         }
 
         """);
@@ -69,12 +69,10 @@ public class CSharpFileTests {
         }
         """;
         TextConfigFile config = TextConfigFile.ReadTextAs(FileTypes.JSON, json);
-        string result = ConfigToText.ToCSharpFile(config);
+        string result = ConfigToText.ToTSFile(config);
         await Assert.That(result).IsEqualTo("""
-        namespace HowlDev.Cli.Tests;
-        
-        public class IdAndTitleDTO {
-            public string? Name { get; set; } = "Default Name";
+        export type IdAndTitleDTO = {
+            Name: string | undefined
         }
 
         """);
@@ -96,15 +94,11 @@ public class CSharpFileTests {
                 {
                     "name": "Sample",
                     "type": "string", 
-                    "default": "Unknown"
+                    "default": "Unknown", 
+                    "nullable": true
                 },
                 {
-                    "name": "Indexes",
-                    "type": "Calculator[]",
-                    "default": "new()"
-                },
-                {
-                    "name": "Boolean",
+                    "name": "Bool",
                     "type": "bool", 
                     "default": "true"
                 },
@@ -117,18 +111,16 @@ public class CSharpFileTests {
         }
         """;
         TextConfigFile config = TextConfigFile.ReadTextAs(FileTypes.JSON, json);
-        string result = ConfigToText.ToCSharpFile(config);
+        string result = ConfigToText.ToTSFile(config);
         await Assert.That(result).IsEqualTo("""
-        #pragma warning disable
-        namespace ProjectTracker.Classes;
-        
-        public class IdAndTitleDTO {
-            public int Id { get; set; } = 23;
-            public string Sample { get; set; } = "Unknown";
-            public Calculator[] Indexes { get; set; } = new();
-            public bool Boolean { get; set; } = true;
-            public double Amount { get; set; } = 25.1;
+        /* eslint-disable */
+        export type IdAndTitleDTO = {
+            Id: number 
+            Sample: string | undefined
+            Bool: boolean 
+            Amount: number 
         }
+        /* eslint-enable */
 
         """);
     }
